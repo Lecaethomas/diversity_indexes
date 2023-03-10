@@ -1,4 +1,4 @@
-# %%
+
 # Author : T.Lecae - INRAE - US-ODR
 # Date : 09/03/2023
 #######
@@ -14,7 +14,7 @@ from scipy.stats import entropy
 from scipy import ndimage
 import os
 
-# %%
+
 ## Define directories
 
 
@@ -35,7 +35,6 @@ if not os.path.exists(output_directory):
 
 print(output_directory)
 
-# %%
 ## Definition de quelques fonctions permettant de calculer des indices de diversité. Diversité brute de pixels mais aussi pour certaines prenant en compte les patches. 
 ## Elles seront appliquées itterativement aux "morceaux" d'OSO découpés par les polygones de parcelles du RPG
 
@@ -215,8 +214,6 @@ def calc_iji(masked):
     return iji
 
 
-
-# %%
 # Load the raster data and vector data
 with rasterio.open(os.path.join(data_directory, "oso_2021_2_2154.tif")) as src:
     # print("connection_meta : " , src.meta)
@@ -314,7 +311,7 @@ with rasterio.open(os.path.join(data_directory, "oso_2021_2_2154.tif")) as src:
 
 
 
-
+print( 'DONE')
 
 
 
