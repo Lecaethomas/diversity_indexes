@@ -1,0 +1,5 @@
+{
+    "raster_file_name": "oso_2021_2_2154.tif",
+    "rpg_complete_name": "rpg_cplt.shp",
+    "name_for_output_parcels" : "parcels_w_indexes.shp"
+}

@@ -1,10 +1,9 @@
-
 # Author : T.Lecae - INRAE - US-ODR
 # Date : 09/03/2023
 #######
 ## Code executed using Gis_1 environment
 ## The environment may be reproduced using $ conda create --name <env> --file requirements.txt
-## Create requirement.txt using :: conda list -e > requirements.txt
+## requirement.txt created using :: conda list -e > requirements.txt
 import rasterio
 import numpy as np
 import geopandas as gpd
@@ -13,27 +12,45 @@ from rasterio.mask import mask
 from scipy.stats import entropy
 from scipy import ndimage
 import os
+import json
+
+
 
 
 ## Define directories
 
 
-# Get the path to the parent directory
-parent_directory = os.path.abspath(os.path.join(os.getcwd(), ".."))
+# Get the path to the parent dir
+parent_dir = os.path.abspath(os.path.join(os.getcwd(), ".."))
 #### Data dir
-# Construct the path to the data directory
-data_directory = os.path.join(parent_directory, "data")
-# Create the directory if it doesn't exist
-if not os.path.exists(data_directory):
-    os.mkdir(data_directory)
+# Construct the path to the data dir
+code_dir = os.path.join(parent_dir, "code")
+# Create the dir if it doesn't exist
+if not os.path.exists(code_dir):
+    os.mkdir(code_dir)
+#### Data dir
+# Construct the path to the data dir
+data_dir = os.path.join(parent_dir, "data")
+# Create the dir if it doesn't exist
+if not os.path.exists(data_dir):
+    os.mkdir(data_dir)
 #### Output dir
-# Construct the path to the data directory
-output_directory = os.path.join(parent_directory, "output")
-# Create the directory if it doesn't exist
-if not os.path.exists(output_directory):
-    os.mkdir(output_directory)
+# Construct the path to the data dir
+output_dir = os.path.join(parent_dir, "output")
+# Create the dir if it doesn't exist
+if not os.path.exists(output_dir):
+    os.mkdir(output_dir)
 
-print(output_directory)
+print(output_dir)
+params_f = os.path.join(code_dir, 'param.json')
+f = open(params_f)
+params = json.load(f)
+
+raster_name = params["raster_file_name"]
+vector_name = params["rpg_complete_name"]
+output_name = params["name_for_output_parcels"]
+print(raster_name)
+
 
 ## Definition de quelques fonctions permettant de calculer des indices de diversité. Diversité brute de pixels mais aussi pour certaines prenant en compte les patches. 
 ## Elles seront appliquées itterativement aux "morceaux" d'OSO découpés par les polygones de parcelles du RPG
@@ -215,10 +232,10 @@ def calc_iji(masked):
 
 
 # Load the raster data and vector data
-with rasterio.open(os.path.join(data_directory, "oso_2021_2_2154.tif")) as src:
+with rasterio.open(os.path.join(data_dir, raster_name)) as src:
     # print("connection_meta : " , src.meta)
     raster = src.read(1)
-    polygons = gpd.read_file(os.path.join(data_directory, "rpg_cplt.shp"))
+    polygons = gpd.read_file(os.path.join(data_dir, vector_name))
     # print('type', )
     ## Create a new columns to store the class diversity indexes and other infos
     polygons['cells_numb'] = np.nan
@@ -307,7 +324,7 @@ with rasterio.open(os.path.join(data_directory, "oso_2021_2_2154.tif")) as src:
     # Enlight polygons by keeping only interesting columns 
     light_polygons = polygons[[ 'geometry','cells_numb','class_numb', 'shannon_diversity', 'simpson_diversity', 'class_diversity', 'shannon_evenness', 'dominance_index', 'ldi', 'contag_index',  'patch_cohesion_index', 'lsi', 'pri', 'iji', 'patch_numb']] 
     # Save the polygon data to a GeoJSON file
-    light_polygons.to_file(os.path.join(output_directory, "polygons.json"), driver='GeoJSON', index=True)
+    light_polygons.to_file(os.path.join(output_dir, output_name), driver='ESRI Shapefile', index=True)
 
 
 
