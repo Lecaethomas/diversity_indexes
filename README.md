@@ -7,11 +7,28 @@ These focus on showing diversity of classes of landcover in a raster layer. That
 It may be useful for landscape ecologists or any other kind of domains aiming at assessing the diversity of raster cells contained in polygon data.
 ### How?
 Despite the code had been parameterized, it still needs installs and little skills in coding (using conda for install, editing .json file...)
-### List of indexes computed :
-
+### Appended fields :
+**Between parenthesis it's the field name used**
+#### Basics infos (computed for each polygons individually): 
+- total cells number (*cells_n*)
+- total patch number (patch defined as a contiguous set of cells belonging to the same class) (*patchs_n*)
+- class number (*class_n*)
+#### Diversity indexes
+For more infos about diversity indexes and their meaning look at Fragstat docs
+- Class diversity (*class_d*)
+- Shannon diversity (*shannon_d*)
+- Simpson diversity (*simpson_d*)
+- Jaccard diversity (*jaccard_d*)
+- Shannon eveness (*shannon_e*)
+- Dominance index (*dominance_i*)
+- Contagion index (*contag*)
+- Landscape Division Index (LDI) (*ldi*)
+- Landscape Shape Index (LSI) (*lsi*)
+- Patch Richness Index (PRI) (*pri*)
+- Interspersion end Juxtaposition Index (IJI) (*iji*)
 ## In depths
 This tool take two inputs : 
-- one one-band raster layer made of cells with integers
+- one one-band raster layer made of integers
 - one vectorial layer (format readen by geopandas/fiona see below) made of polygons 
 ### Installs : 
 - DL this repo
