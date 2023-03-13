@@ -15,10 +15,7 @@ import os
 import json
 
 
-
-
 ## Define directories
-
 
 # Get the path to the parent dir
 parent_dir = os.path.abspath(os.path.join(os.getcwd(), ".."))
@@ -233,8 +230,14 @@ def calc_iji(masked):
 
 # Load the raster data and vector data
 with rasterio.open(os.path.join(data_dir, raster_name)) as src:
+    # print('CRS : ', src.crs, 'EPSG : ', rasterio.crs.CRS.from_string(src.crs))
     # print("connection_meta : " , src.meta)
     raster = src.read(1)
+    crs = src.crs
+    epsg = crs.to_epsg()
+    print('Your raster file is using crs  : ', crs, 'This coordinate system will be used to reproject vectorial data if not.')
+    
+    
     polygons = gpd.read_file(os.path.join(data_dir, vector_name))
     # print('type', )
     ## Create a new columns to store the class diversity indexes and other infos
