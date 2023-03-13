@@ -247,9 +247,9 @@ with rasterio.open(os.path.join(data_dir, raster_name)) as src:
     else :
         print('Your polygons EPSG is : ', polygons.crs, '. It won\'t be reprojected.' )
     ## Create a new columns to store the class diversity indexes and other infos
-    polygons['cells_numb'] = np.nan
-    polygons['class_numb'] = np.nan
-    polygons['patch_numb']= np.nan
+    polygons['cells_n'] = np.nan
+    polygons['class_n'] = np.nan
+    polygons['patch_n']= np.nan
 
     # "simple" diversity indices
     polygons['class_diversity'] = np.nan

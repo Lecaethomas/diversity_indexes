@@ -8,7 +8,7 @@ It may be useful for landscape ecologists or any other kind of domains aiming at
 ### How?
 Despite the code had been parameterized, it still needs installs and little skills in coding (using conda for install, editing .json file...)
 ### Appended fields :
-**Between parenthesis it's the field name used**
+**Between parenthesis : the field name used**
 #### Basics infos (computed for each polygons individually): 
 - total cells number (*cells_n*)
 - total patch number (patch defined as a contiguous set of cells belonging to the same class) (*patchs_n*)
@@ -26,7 +26,7 @@ For more infos about diversity indexes and their meaning look at Fragstat docs
 - Landscape Shape Index (LSI) (*lsi*)
 - Patch Richness Index (PRI) (*pri*)
 - Interspersion end Juxtaposition Index (IJI) (*iji*)
-## In depths
+## Usage
 This tool take two inputs : 
 - one one-band raster layer made of integers
 - one vectorial layer (format readen by geopandas/fiona see below) made of polygons 
@@ -59,4 +59,4 @@ You can precise the name of your output. If the directory "output" doesn't exist
  'OGR_PDS',
  'S57',
  'SQLite',
- 'TopoJSON'`
+ 'TopoJSON'` 
