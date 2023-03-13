@@ -252,18 +252,18 @@ with rasterio.open(os.path.join(data_dir, raster_name)) as src:
     polygons['patch_n']= np.nan
 
     # "simple" diversity indices
-    polygons['class_diversity'] = np.nan
-    polygons['shannon_diversity'] = np.nan
-    polygons['simpson_diversity'] = np.nan
-    polygons['jaccard_diversity'] = np.nan
-    polygons['shannon_evenness'] = np.nan
-    polygons['dominance_index'] = np.nan
+    polygons['class_d'] = np.nan
+    polygons['shannon_d'] = np.nan
+    polygons['simpson_d'] = np.nan
+    polygons['jaccard_d'] = np.nan
+    polygons['shannon_e'] = np.nan
+    polygons['dominance_i'] = np.nan
     
     # other indexes
-    polygons['contag_index'] = np.nan
+    polygons['contag_i'] = np.nan
     polygons['ldi'] = np.nan
     # Patch based indexes
-    polygons['patch_cohesion_index'] = np.nan
+    polygons['pci'] = np.nan
     polygons['lsi']=np.nan
     polygons['pri']=np.nan
     polygons['iji']=np.nan
@@ -312,26 +312,26 @@ with rasterio.open(os.path.join(data_dir, raster_name)) as src:
         
         ## Store computed data 
         # Store basic information about the mask (cell number, classes number)
-        polygons.loc[index, 'cells_numb'] = total_cells
-        polygons.loc[index, 'class_numb'] = class_numb
-        polygons.loc[index, 'patch_numb'] = patch_numb
+        polygons.loc[index, 'cells_n'] = total_cells
+        polygons.loc[index, 'class_n'] = class_numb
+        polygons.loc[index, 'patch_n'] = patch_numb
         # Store the diversity indices in the new columns
-        polygons.loc[index, 'shannon_diversity'] = shannon_diversity
-        polygons.loc[index, 'simpson_diversity'] = simpson_diversity
-        polygons.loc[index, 'class_diversity'] = diversity_index
-        polygons.loc[index, 'shannon_evenness'] = shannon_evenness
+        polygons.loc[index, 'shannon_d'] = shannon_diversity
+        polygons.loc[index, 'simpson_d'] = simpson_diversity
+        polygons.loc[index, 'class_d'] = diversity_index
+        polygons.loc[index, 'shannon_e'] = shannon_evenness
         # Store the dominance index and LDI in the new columns
-        polygons.loc[index, 'dominance_index'] = dominance_index
+        polygons.loc[index, 'dominance_i'] = dominance_index
         polygons.loc[index, 'ldi'] = ldi
         # Patch based indexes
-        polygons.loc[index,'patch_cohesion_index'] = pci
+        polygons.loc[index,'pci'] = pci
         polygons.loc[index, 'lsi'] = lsi
         polygons.loc[index, 'pri'] = pri
         polygons.loc[index, 'iji'] = iji
-        polygons.loc[index, 'contag_index'] = contag
+        polygons.loc[index, 'contag_i'] = contag
     
     # Enlight polygons by keeping only interesting columns 
-    light_polygons = polygons[[ 'geometry','cells_numb','class_numb', 'shannon_diversity', 'simpson_diversity', 'class_diversity', 'shannon_evenness', 'dominance_index', 'ldi', 'contag_index',  'patch_cohesion_index', 'lsi', 'pri', 'iji', 'patch_numb']] 
+    light_polygons = polygons[[ 'geometry','cells_n', 'patch_n','class_n', 'shannon_d', 'simpson_d', 'class_d', 'shannon_e', 'dominance_i', 'ldi', 'contag_i',  'pci', 'lsi', 'pri', 'iji']] 
     # Save the polygon data to a GeoJSON file
     light_polygons.to_file(os.path.join(output_dir, output_name), driver='ESRI Shapefile', index=True)
 
