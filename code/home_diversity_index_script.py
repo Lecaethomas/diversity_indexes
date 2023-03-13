@@ -15,6 +15,8 @@ import os
 import json
 
 
+# Ignore division by zeros numpy errors 
+np.seterr(all='ignore')
 ## Define directories
 
 # Get the path to the parent dir
@@ -46,7 +48,6 @@ params = json.load(f)
 raster_name = params["raster_file_name"]
 vector_name = params["rpg_complete_name"]
 output_name = params["name_for_output_parcels"]
-print(raster_name)
 
 
 ## Definition de quelques fonctions permettant de calculer des indices de diversité. Diversité brute de pixels mais aussi pour certaines prenant en compte les patches. 
@@ -233,13 +234,18 @@ with rasterio.open(os.path.join(data_dir, raster_name)) as src:
     # print('CRS : ', src.crs, 'EPSG : ', rasterio.crs.CRS.from_string(src.crs))
     # print("connection_meta : " , src.meta)
     raster = src.read(1)
-    crs = src.crs
-    epsg = crs.to_epsg()
-    print('Your raster file is using crs  : ', crs, 'This coordinate system will be used to reproject vectorial data if not.')
+    r_crs = src.crs
+    r_epsg = r_crs.to_epsg()
+    print('Your raster file is using crs: ', r_crs, 'This coordinate system will be used to reproject vectorial data if not.')
     
     
     polygons = gpd.read_file(os.path.join(data_dir, vector_name))
-    # print('type', )
+    if (polygons.crs.to_epsg()!= r_epsg) :
+        print('Your polygons EPSG is : ', polygons.crs, '. It will be reprojected using raster\'s EPSG.' )
+        polygons = polygons.to_crs(r_epsg)
+        #do nothing
+    else :
+        print('Your polygons EPSG is : ', polygons.crs, '. It won\'t be reprojected.' )
     ## Create a new columns to store the class diversity indexes and other infos
     polygons['cells_numb'] = np.nan
     polygons['class_numb'] = np.nan
@@ -329,9 +335,7 @@ with rasterio.open(os.path.join(data_dir, raster_name)) as src:
     # Save the polygon data to a GeoJSON file
     light_polygons.to_file(os.path.join(output_dir, output_name), driver='ESRI Shapefile', index=True)
 
-
-
-print( 'DONE')
+print( 'The process finished successfully.')
 
 
 
