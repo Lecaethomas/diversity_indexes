@@ -15,39 +15,37 @@ import os
 import json
 
 
-# Ignore division by zeros numpy errors 
+# Ignore "division by zeros" numpy errors 
 np.seterr(all='ignore')
-## Define directories
 
-# Get the path to the parent dir
+# Define directories
+### Get the path to the parent dir
 parent_dir = os.path.abspath(os.path.join(os.getcwd(), ".."))
 #### Data dir
-# Construct the path to the data dir
+# build the path to the code dir
 code_dir = os.path.join(parent_dir, "code")
-# Create the dir if it doesn't exist
-if not os.path.exists(code_dir):
-    os.mkdir(code_dir)
 #### Data dir
-# Construct the path to the data dir
+# build the path to the data dir
 data_dir = os.path.join(parent_dir, "data")
-# Create the dir if it doesn't exist
-if not os.path.exists(data_dir):
-    os.mkdir(data_dir)
 #### Output dir
-# Construct the path to the data dir
+# build the path to the output dir
 output_dir = os.path.join(parent_dir, "output")
 # Create the dir if it doesn't exist
 if not os.path.exists(output_dir):
     os.mkdir(output_dir)
 
-print(output_dir)
-params_f = os.path.join(code_dir, 'param.json')
-f = open(params_f)
-params = json.load(f)
 
-raster_name = params["raster_file_name"]
-vector_name = params["rpg_complete_name"]
-output_name = params["name_for_output_parcels"]
+params_f = os.path.join(code_dir, 'param.json')
+with open(params_f, 'r') as f:
+    params = json.load(f)
+
+    if params['save_all_fields'].lower() == 'true':
+        save_all_fields = True
+    else:
+        save_all_fields = False
+    raster_name = params["raster_file_name"]
+    vector_name = params["rpg_complete_name"]
+    output_name = params["name_for_output_parcels"]
 
 
 ## Definition de quelques fonctions permettant de calculer des indices de diversité. Diversité brute de pixels mais aussi pour certaines prenant en compte les patches. 
@@ -229,47 +227,7 @@ def calc_iji(masked):
     return iji
 
 
-# Load the raster data and vector data
-with rasterio.open(os.path.join(data_dir, raster_name)) as src:
-    # print('CRS : ', src.crs, 'EPSG : ', rasterio.crs.CRS.from_string(src.crs))
-    # print("connection_meta : " , src.meta)
-    raster = src.read(1)
-    r_crs = src.crs
-    r_epsg = r_crs.to_epsg()
-    print('Your raster file is using crs: ', r_crs, 'This coordinate system will be used to reproject vectorial data if not.')
-    
-    
-    polygons = gpd.read_file(os.path.join(data_dir, vector_name))
-    if (polygons.crs.to_epsg()!= r_epsg) :
-        print('Your polygons EPSG is : ', polygons.crs, '. It will be reprojected using raster\'s EPSG.' )
-        polygons = polygons.to_crs(r_epsg)
-        #do nothing
-    else :
-        print('Your polygons EPSG is : ', polygons.crs, '. It won\'t be reprojected.' )
-    ## Create a new columns to store the class diversity indexes and other infos
-    polygons['cells_n'] = np.nan
-    polygons['class_n'] = np.nan
-    polygons['patch_n']= np.nan
-
-    # "simple" diversity indices
-    polygons['class_d'] = np.nan
-    polygons['shannon_d'] = np.nan
-    polygons['simpson_d'] = np.nan
-    polygons['jaccard_d'] = np.nan
-    polygons['shannon_e'] = np.nan
-    polygons['dominance_i'] = np.nan
-    
-    # other indexes
-    polygons['contag_i'] = np.nan
-    polygons['ldi'] = np.nan
-    # Patch based indexes
-    polygons['pci'] = np.nan
-    polygons['lsi']=np.nan
-    polygons['pri']=np.nan
-    polygons['iji']=np.nan
-
-    # Loop through each polygon
-    # This function will extract the polygon from the raster and extract the polygon geometry and mask the raster with the polygon.
+def compute_indices(polygons, src, output_dir, output_name):
     for index, polygon in polygons.iterrows():
         # Extract the geometry of the polygon
         geom = polygon.geometry
@@ -320,7 +278,7 @@ with rasterio.open(os.path.join(data_dir, raster_name)) as src:
         polygons.loc[index, 'simpson_d'] = simpson_diversity
         polygons.loc[index, 'class_d'] = diversity_index
         polygons.loc[index, 'shannon_e'] = shannon_evenness
-        # Store the dominance index and LDI in the new columns
+        # Store the dominance index and LDIin the new columns
         polygons.loc[index, 'dominance_i'] = dominance_index
         polygons.loc[index, 'ldi'] = ldi
         # Patch based indexes
@@ -330,18 +288,35 @@ with rasterio.open(os.path.join(data_dir, raster_name)) as src:
         polygons.loc[index, 'iji'] = iji
         polygons.loc[index, 'contag_i'] = contag
     
+    if save_all_fields:
+        print('true')
+        polygons.to_file(os.path.join(output_dir, output_name), driver='ESRI Shapefile', index=True)
+
+    else :
+        print('false')
+        light_polygons = polygons[[ 'geometry','cells_n', 'patch_n','class_n', 'shannon_d', 'simpson_d', 'class_d', 'shannon_e', 'dominance_i', 'ldi', 'contag_i',  'pci', 'lsi', 'pri', 'iji']] 
+            # Save the polygon data to a GeoJSON file
+        light_polygons.to_file(os.path.join(output_dir, output_name), driver='ESRI Shapefile', index=True)
     # Enlight polygons by keeping only interesting columns 
-    light_polygons = polygons[[ 'geometry','cells_n', 'patch_n','class_n', 'shannon_d', 'simpson_d', 'class_d', 'shannon_e', 'dominance_i', 'ldi', 'contag_i',  'pci', 'lsi', 'pri', 'iji']] 
-    # Save the polygon data to a GeoJSON file
-    light_polygons.to_file(os.path.join(output_dir, output_name), driver='ESRI Shapefile', index=True)
 
+# Load the raster data and vector data
+with rasterio.open(os.path.join(data_dir, raster_name)) as src:
+    # print('CRS : ', src.crs, 'EPSG : ', rasterio.crs.CRS.from_string(src.crs))
+    # print("connection_meta : " , src.meta)
+    raster = src.read(1)
+    r_crs = src.crs
+    r_epsg = r_crs.to_epsg()
+    print('Your raster file is using crs: ', r_epsg, 'This coordinate system will be used to reproject vectorial data if not.')
+    
+    
+    polygons = gpd.read_file(os.path.join(data_dir, vector_name))
+    if (polygons.crs.to_epsg()!= r_epsg) :
+        print('Your polygons EPSG is : ', polygons.crs, '. It will be reprojected using raster\'s EPSG.' )
+        polygons = polygons.to_crs(r_epsg)
+        #do nothing
+    else :
+        print('Your polygons EPSG is : ', polygons.crs, '. It won\'t be reprojected.' )
+        
+    compute_indices(polygons, src, output_dir, output_name)
+    
 print( 'The process finished successfully.')
-
-
-
-
-
-
-
-
-

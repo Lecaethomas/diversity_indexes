@@ -6,7 +6,7 @@ These focus on showing diversity of classes of landcover in a raster layer. That
 ### For who?
 It may be useful for landscape ecologists or any other kind of domains aiming at assessing the diversity of raster cells contained in polygon data.
 ### How?
-Despite the code had been parameterized, it still needs installs and little skills in coding (using conda for install, editing .json file...)
+Despite the code had been parameterized, it still needs installs and little skills in python/tech (using conda for install, editing .json file...)
 ### Appended fields :
 **Between parenthesis : the field name used**
 #### Basics infos (computed for each polygons individually): 
@@ -21,7 +21,7 @@ For more infos about diversity indexes and their meaning look at Fragstat docs
 - Jaccard diversity (*jaccard_d*)
 - Shannon eveness (*shannon_e*)
 - Dominance index (*dominance_i*)
-- Contagion index (*contag*)
+- Contagion index (*contag_i*)
 - Landscape Division Index (LDI) (*ldi*)
 - Landscape Shape Index (LSI) (*lsi*)
 - Patch Richness Index (PRI) (*pri*)
