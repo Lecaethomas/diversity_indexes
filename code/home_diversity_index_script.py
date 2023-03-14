@@ -301,8 +301,7 @@ def compute_indices(polygons, src, output_dir, output_name):
 
 # Load the raster data and vector data
 with rasterio.open(os.path.join(data_dir, raster_name)) as src:
-    # print('CRS : ', src.crs, 'EPSG : ', rasterio.crs.CRS.from_string(src.crs))
-    # print("connection_meta : " , src.meta)
+    #Get infos about projection (in case data don't use the same projection the code will reproject vectorial data so that it matches raster projection)
     raster = src.read(1)
     r_crs = src.crs
     r_epsg = r_crs.to_epsg()
