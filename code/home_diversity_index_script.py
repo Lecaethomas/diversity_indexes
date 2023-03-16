@@ -1,7 +1,7 @@
 # Author : T.Lecae - INRAE - US-ODR
 # Date : 09/03/2023
 #######
-## Code executed using Gis_1 environment
+## Code executed using gis_1 environment
 ## The environment may be reproduced using $ conda create --name <env> --file requirements.txt
 ## requirement.txt created using :: conda list -e > requirements.txt
 import rasterio
@@ -13,6 +13,7 @@ from scipy.stats import entropy
 from scipy import ndimage
 import os
 import json
+from multiprocessing import Pool
 
 
 # Ignore "division by zeros" numpy errors 
@@ -228,7 +229,7 @@ def calc_iji(masked):
 
 
 def compute_indices(polygons, src, output_dir, output_name):
-    for index, polygon in polygons.iterrows():
+    
         # Extract the geometry of the polygon
         geom = polygon.geometry
         # Mask the raster with the polygon geometry
@@ -287,17 +288,17 @@ def compute_indices(polygons, src, output_dir, output_name):
         polygons.loc[index, 'pri'] = pri
         polygons.loc[index, 'iji'] = iji
         polygons.loc[index, 'contag_i'] = contag
-    
-    if save_all_fields:
-        print('true')
-        polygons.to_file(os.path.join(output_dir, output_name), driver='ESRI Shapefile', index=True)
+    ## Here I try to get a boolean from the json parameters file. I couldn't parse it correctly so 
+        if save_all_fields:
+            print('true')
+            polygons.to_file(os.path.join(output_dir, output_name), driver='ESRI Shapefile', index=True)
 
-    else :
-        print('false')
-        light_polygons = polygons[[ 'geometry','cells_n', 'patch_n','class_n', 'shannon_d', 'simpson_d', 'class_d', 'shannon_e', 'dominance_i', 'ldi', 'contag_i',  'pci', 'lsi', 'pri', 'iji']] 
-            # Save the polygon data to a GeoJSON file
-        light_polygons.to_file(os.path.join(output_dir, output_name), driver='ESRI Shapefile', index=True)
-    # Enlight polygons by keeping only interesting columns 
+        else :
+            print('false')
+            light_polygons = polygons[[ 'geometry','cells_n', 'patch_n','class_n', 'shannon_d', 'simpson_d', 'class_d', 'shannon_e', 'dominance_i', 'ldi', 'contag_i',  'pci', 'lsi', 'pri', 'iji']] 
+                # Save the polygon data to a GeoJSON file
+            light_polygons.to_file(os.path.join(output_dir, output_name), driver='ESRI Shapefile', index=True)
+        # Enlight polygons by keeping only interesting columns 
 
 # Load the raster data and vector data
 with rasterio.open(os.path.join(data_dir, raster_name)) as src:
@@ -315,7 +316,19 @@ with rasterio.open(os.path.join(data_dir, raster_name)) as src:
         #do nothing
     else :
         print('Your polygons EPSG is : ', polygons.crs, '. It won\'t be reprojected.' )
-        
-    compute_indices(polygons, src, output_dir, output_name)
+    if __name__ == '__main__':
+        try:
+            p = Pool(processes=5)
+            p.map_async(lambda x: compute_indices(x[1], src, output_dir, output_name), polygons.iterrows())
+            print('The process finished successfully.')
+            p.close()
+        except Exception as e:
+            print(e)
+            p.terminate()
+            print('except')
+        finally:
+            p.join()
+            print('join')
+    # compute_indices(polygons, src, output_dir, output_name)
+    #for index, polygon in polygons.iterrows()
     
-print( 'The process finished successfully.')
