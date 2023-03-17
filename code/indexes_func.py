@@ -256,11 +256,12 @@ def calc_most_common_landcover_class(polygon, src):
         values, counts = np.unique(clipped_raster, return_counts=True)
         # find the index of the maximum count
         mode_index = np.argmax(counts)
-
+        filter_arr = values > 0
+        edge_class_numb = values[filter_arr].size
         # the mode is the value at the mode index
         mode = values[mode_index]
         
-        return mode
+        return mode, edge_class_numb
     except ValueError as e:
         print(f"Error: {e}. Skipping polygon...")
         return np.nan
