@@ -1,7 +1,7 @@
 # Author : T.Lecae - INRAE - US-ODR
 # Date : 09/03/2023
 #######
-## Code executed using Gis_1 environment
+## Code executed using gis_1 environment
 ## The environment may be reproduced using $ conda create --name <env> --file requirements.txt
 ## requirement.txt created using :: conda list -e > requirements.txt
 import rasterio
@@ -15,6 +15,9 @@ import os
 import json
 from indexes_func import *
 
+
+## DEBUG
+debug = False
 
 # Ignore "division by zeros" numpy errors 
 np.seterr(all='ignore')
@@ -130,23 +133,37 @@ def compute_indices(polygons, src, output_dir, output_name):
         light_polygons.to_file(os.path.join(output_dir, output_name), driver='ESRI Shapefile', index=True)
     # Enlight polygons by keeping only interesting columns 
 
+
+def compute_indices_parallel(polygons, src, output_dir, output_name, num_processes=4):
+        poly_index_polygon_tuples = [(index, row) for index, row in polygons.iterrows()]
+        if __name__ == '__main__':
+            with Pool(num_processes) as p:
+                results = p.map(
+                    lambda x: compute_indices(x, src, output_dir, output_name),
+                    poly_index_polygon_tuples
+                )
+        
+            return results
 # Load the raster data and vector data
 with rasterio.open(os.path.join(data_dir, raster_name)) as src:
     #Get infos about projection (in case data don't use the same projection the code will reproject vectorial data so that it matches raster projection)
     raster = src.read(1)
     r_crs = src.crs
     r_epsg = r_crs.to_epsg()
-    print('Your raster file is using crs: ', r_epsg, 'This coordinate system will be used to reproject vectorial data if not.')
+    # print('Your raster file is using crs: ', r_epsg, 'This coordinate system will be used to reproject vectorial data if not.')
     
     
     polygons = gpd.read_file(os.path.join(data_dir, vector_name))
     if (polygons.crs.to_epsg()!= r_epsg) :
-        print('Your polygons EPSG is : ', polygons.crs, '. It will be reprojected using raster\'s EPSG.' )
+        # print('Your polygons EPSG is : ', polygons.crs, '. It will be reprojected using raster\'s EPSG.' )
         polygons = polygons.to_crs(r_epsg)
         #do nothing
     else :
-        print('Your polygons EPSG is : ', polygons.crs, '. It won\'t be reprojected.' )
-        
-    compute_indices(polygons, src, output_dir, output_name)
+        # print('Your polygons EPSG is : ', polygons.crs, '. It won\'t be reprojected.' )
+        pass
     
-print( 'The process finished successfully.')
+    
+    compute_indices_parallel(polygons, src, output_dir, output_name, num_processes=4)
+    # compute_indices(polygons, src, output_dir, output_name)
+    #for index, polygon in polygons.iterrows()
+    
