@@ -1,9 +1,3 @@
-# Author : T.Lecae - INRAE - US-ODR
-# Date : 09/03/2023
-#######
-## Code executed using Gis_1 environment
-## The environment may be reproduced using $ conda create --name <env> --file requirements.txt
-## requirement.txt created using :: conda list -e > requirements.txt
 import rasterio
 import numpy as np
 import geopandas as gpd
@@ -13,11 +7,9 @@ from scipy.stats import entropy
 from scipy import ndimage
 import os
 import json
+# Local Imports
 from indexes_func import *
 
-
-# Ignore "division by zeros" numpy errors 
-np.seterr(all='ignore')
 
 # Define directories
 ### Get the path to the parent dir
@@ -48,8 +40,7 @@ with open(params_f, 'r') as f:
     vector_name = params["rpg_complete_name"]
     output_name = params["name_for_output_parcels"]
 
-
-def compute_indices(polygons, src, output_dir, output_name):
+def _compute_indexes(polygons, src, output_dir, output_name):
     
     for index, polygon in polygons.iterrows():
         # Extract the geometry of the polygon
@@ -130,22 +121,3 @@ def compute_indices(polygons, src, output_dir, output_name):
             # Save the polygon data to a GeoJSON file
         light_polygons.to_file(os.path.join(output_dir, output_name), driver='ESRI Shapefile', index=True)
     # Enlight polygons by keeping only interesting columns 
-
-# Load the raster data and vector data
-with rasterio.open(os.path.join(data_dir, raster_name)) as src:
-    #Get infos about projection (in case data don't use the same projection the code will reproject vectorial data so that it matches raster projection)
-    raster = src.read(1)
-    r_crs = src.crs
-    r_epsg = r_crs.to_epsg()
-    print('Your raster file is using crs: ', r_epsg, 'This coordinate system will be used to reproject vectorial data if not.')
-    polygons = gpd.read_file(os.path.join(data_dir, vector_name))
-    if (polygons.crs.to_epsg()!= r_epsg) :
-        print('Your polygons EPSG is : ', polygons.crs, '. It will be reprojected using raster\'s EPSG.' )
-        polygons = polygons.to_crs(r_epsg)
-        #do nothing
-    else :
-        print('Your polygons EPSG is : ', polygons.crs, '. It won\'t be reprojected.' )
-        
-    compute_indices(polygons, src, output_dir, output_name)
-    
-print( 'The process finished successfully.')
