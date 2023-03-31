@@ -1,13 +1,13 @@
 import rasterio
 import numpy as np
+from scipy import stats as st
 import geopandas as gpd
 from shapely.geometry import MultiLineString, LineString
 from shapely import ops
 from rasterio.mask import mask
 from scipy.stats import entropy
 from scipy import ndimage
-import os
-import json
+# from collections import Counter
 
 ## Definition de quelques fonctions permettant de calculer des indices de diversité. Diversité brute de pixels mais aussi pour certaines prenant en compte les patches. 
 ## Elles seront appliquées itterativement aux "morceaux" d'OSO découpés par les polygones de parcelles du RPG
@@ -228,18 +228,14 @@ def calc_edges_(polygon, src):
 def calc_edge_diversity_index(polygon, src):
     # Extract the edges of the polygon as a single LineString
     edges = LineString(polygon.geometry.exterior.coords)
-    
     # Clip the raster to the LineString
     try:
         clipped_raster, _ = mask(src, [edges], crop=True)
-        
         # Calculate the diversity index for the clipped raster
         unique_values = np.unique(clipped_raster)
         total_cells = np.size(clipped_raster)
         diversity_index = len(unique_values) / total_cells
-        
         return diversity_index
-        
     except ValueError as e:
         print(f"Error: {e}. Skipping polygon...")
         return np.nan
@@ -247,23 +243,19 @@ def calc_edge_diversity_index(polygon, src):
 def calc_most_common_landcover_class(polygon, src):
     # Extract the edges of the polygon as a single LineString
     edges = LineString(polygon.geometry.exterior.coords)
-    
     # Clip the raster to the LineString
     try:
         clipped_raster, _ = mask(src, [edges], crop=True)
-        
-        # Calculate the mode of the clipped raster
-        values, counts = np.unique(clipped_raster, return_counts=True)
+        # Calculate the mode of the clipped raster. The numpy array includes the rasterio no-data (0) so we still need to remove it.
+        vals,counts = np.unique(clipped_raster[clipped_raster != src.nodata], return_counts=True)
         # find the index of the maximum count
         mode_index = np.argmax(counts)
-        filter_arr = values > 0
-        edge_class_numb = values[filter_arr].size
+        filter_arr = vals > 0
+        edge_class_numb = vals[filter_arr].size
         # the mode is the value at the mode index
-        mode = values[mode_index]
-        
+        mode = vals[mode_index]
         return mode, edge_class_numb
+    
     except ValueError as e:
         print(f"Error: {e}. Skipping polygon...")
         return np.nan
-
-    

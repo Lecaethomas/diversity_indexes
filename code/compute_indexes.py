@@ -10,7 +10,6 @@ import json
 # Local Imports
 from indexes_func import *
 
-
 # Define directories
 ### Get the path to the parent dir
 parent_dir = os.path.abspath(os.path.join(os.getcwd(), ".."))
@@ -27,7 +26,6 @@ output_dir = os.path.join(parent_dir, "output")
 if not os.path.exists(output_dir):
     os.mkdir(output_dir)
 
-
 params_f = os.path.join(code_dir, 'param.json')
 with open(params_f, 'r') as f:
     params = json.load(f)
@@ -41,7 +39,6 @@ with open(params_f, 'r') as f:
     output_name = params["name_for_output_parcels"]
 
 def _compute_indexes(polygons, src, output_dir, output_name):
-    
     for index, polygon in polygons.iterrows():
         # Extract the geometry of the polygon
         geom = polygon.geometry
@@ -49,8 +46,6 @@ def _compute_indexes(polygons, src, output_dir, output_name):
         masked, transform = rasterio.mask.mask(src, [geom], crop=True)
         # Compute basic informations
         cell_values = np.unique(masked.flatten())
-        # counts = np.bincount(masked.flatten())
-        # print('bincount : ', counts)
         unique, counts = np.unique(masked, return_counts=True)
         total_cells = np.sum(counts)
         patch_numb = count_landcover_patches(masked)
@@ -85,6 +80,7 @@ def _compute_indexes(polygons, src, output_dir, output_name):
         ##### EDGES #####
         edges_d_index = calc_edge_diversity_index(polygon, src)
         edges_mode = calc_most_common_landcover_class(polygon, src)[0]
+        
         edges_class_numb = calc_most_common_landcover_class(polygon, src)[1]
         
         ## Store computed data 
@@ -111,8 +107,9 @@ def _compute_indexes(polygons, src, output_dir, output_name):
         polygons.loc[index, 'e_mode'] = edges_mode
         polygons.loc[index, 'e_class_n'] = edges_class_numb
     
-    if save_all_fields:
-        print('true')
+    
+    # Depending on the parameters file we keep all the fields or we only keep the original geometry 
+    if save_all_fields:   
         polygons.to_file(os.path.join(output_dir, output_name), driver='ESRI Shapefile', index=True)
 
     else :
