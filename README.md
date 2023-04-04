@@ -3,6 +3,9 @@ This repo store codes used to process raster and vectorial data aiming at comput
 ## Synthesis
 ### What for?
 These focus on showing diversity of classes of landcover in a raster layer. That diversity may speak out interms of raw number of classes, but also may be thought as diversity of spatial distribution (number of patches).
+|![Alt text](./supports/image1.png "Example of a parcel (RPG Complété 2020 - ODR) overlaying a very diverse amount of landcover pixels (OSO 2021 - CESBIO)")|
+|:--:| 
+|*Example of a parcel (RPG Complété 2020 - ODR) overlaying a very diverse amount of landcover pixels (OSO 2021 - CESBIO)*|
 ### For who?
 It may be useful for landscape ecologists or any other kind of domains aiming at assessing the diversity of raster cells contained in polygon data.
 ### How?
