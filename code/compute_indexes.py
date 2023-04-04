@@ -105,7 +105,10 @@ def _compute_indexes(polygons, src, output_dir, output_name):
         # Store the edge-diversity index in the new column
         polygons.loc[index, 'e_div_i'] = edges_d_index
         polygons.loc[index, 'e_mode'] = edges_mode
-        polygons.loc[index, 'e_class_n'] = edges_class_numb
+        polygons.loc[index, 'e_class_n'] = edges_class_numb 
+        # Store difference between edge's number of classes and polygon total number of classes
+        polygons.loc[index, 'e_p_class_n']= class_numb - edges_class_numb
+        
     
     
     # Depending on the parameters file we keep all the fields or we only keep the original geometry 
@@ -114,7 +117,7 @@ def _compute_indexes(polygons, src, output_dir, output_name):
 
     else :
         print('false')
-        light_polygons = polygons[[ 'geometry','cells_n', 'patch_n','class_n', 'shannon_d', 'simpson_d', 'class_d', 'shannon_e', 'dominance_i', 'ldi', 'contag_i',  'pci', 'lsi', 'pri', 'iji', 'e_div_i', 'e_mode', 'e_class_n']] 
+        light_polygons = polygons[[ 'geometry','cells_n', 'patch_n','class_n', 'shannon_d', 'simpson_d', 'class_d', 'shannon_e', 'dominance_i', 'ldi', 'contag_i',  'pci', 'lsi', 'pri', 'iji', 'e_div_i', 'e_mode', 'e_class_n', 'e_p_class_n']] 
             # Save the polygon data to a GeoJSON file
         light_polygons.to_file(os.path.join(output_dir, output_name), driver='ESRI Shapefile', index=True)
     # Enlight polygons by keeping only interesting columns 

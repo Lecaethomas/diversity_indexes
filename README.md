@@ -15,6 +15,7 @@ Despite the code had been parameterized, it still needs installs and little skil
 - class number (*class_n*)
 #### Diversity indexes
 For more infos about diversity indexes and their meaning look at Fragstat docs
+##### Basics indexes:
 - Class diversity (*class_d*)
 - Shannon diversity (*shannon_d*)
 - Simpson diversity (*simpson_d*)
@@ -22,10 +23,17 @@ For more infos about diversity indexes and their meaning look at Fragstat docs
 - Shannon eveness (*shannon_e*)
 - Dominance index (*dominance_i*)
 - Contagion index (*contag_i*)
+##### Patch based indexes:
 - Landscape Division Index (LDI) (*ldi*)
 - Landscape Shape Index (LSI) (*lsi*)
 - Patch Richness Index (PRI) (*pri*)
 - Interspersion end Juxtaposition Index (IJI) (*iji*)
+##### Edges analysis
+- edge diversity index (*e_mode*)
+- edge mode (*pri*)
+- edge class number (*e_class_n*)
+- Difference in class number between edge and entire polygon (*e_p_class_n*)
+
 ## Usage
 This tool take two inputs : 
 - one one-band raster layer made of integers
