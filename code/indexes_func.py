@@ -187,47 +187,19 @@ def calc_iji(masked):
     
     return iji
 
-def calc_edges_(polygon, src):
-    # Extract the edges of the polygon as line segments
-    edges = [LineString([pt1, pt2]) for pt1, pt2 in zip(polygon.geometry.exterior.coords[:-1], polygon.geometry.exterior.coords[1:])]
-    edges = [LineString([pt1, pt2]) for pt1, pt2 in zip(polygon.geometry.exterior.coords[:-1], polygon.geometry.exterior.coords[1:])]
-
-    # Create a MultiLineString object from the edges
-    mls = MultiLineString(edges)
-
-    # Merge the lines into a single linestring
-    merged_line = ops.linemerge(mls)
-    # Clip the raster to the line segments
-    edge_rasters = []
-    # for edge in edges:
-    try:
-            clipped_raster, _ = mask(src, [merged_line], crop=True)
-            edge_rasters.append(clipped_raster)
-    except ValueError as e:
-            print(e)
-        
-    # Calculate the diversity index for each edge raster
-    edge_diversity_indices = []
-    pol_unique_values = []
-    for edge_raster in edge_rasters:
-        unique_values = np.unique(edge_raster)
-        total_cells = np.size(edge_raster)
-        diversity_index = len(unique_values) / total_cells
-        edge_diversity_indices.append(diversity_index)
-    
-    # Calculate the average edge-diversity index
-    if edge_diversity_indices:
-        edge_diversity_index = np.mean(edge_diversity_indices)
-        pol_unique_values = np.sum(unique_values)
-    else:
-        edge_diversity_index = np.nan
-        pol_unique_values = np.nan
-    
-    return edge_diversity_index, pol_unique_values
-
-def calc_edge_diversity_index(polygon, src):
-    # Extract the edges of the polygon as a single LineString
+def calc_edges(polygon) : 
     edges = LineString(polygon.geometry.exterior.coords)
+    return edges
+
+def calc_edge_diversity_index(edges, src):
+    """
+     @brief Calculate the diversity index for the edges of the polygon.
+     @param polygon shapely. geometry. Polygon Polygon to be analysed
+     @param src shapely. geometry. Polygon Source geometry to be used for clipping
+     @return int Index of the diversity in the polygon
+    """
+    # Extract the edges of the polygon as a single LineString
+    # edges = LineString(polygon.geometry.exterior.coords)
     # Clip the raster to the LineString
     try:
         clipped_raster, _ = mask(src, [edges], crop=True)
@@ -240,9 +212,15 @@ def calc_edge_diversity_index(polygon, src):
         print(f"Error: {e}. Skipping polygon...")
         return np.nan
 
-def calc_most_common_landcover_class(polygon, src):
+def calc_most_common_landcover_class(edges, src):
+    """
+     @brief Calculate the most common landcover class for a shapely Polygon. This is used to calculate the most frequently used landcover class for a shapely Polygon
+     @param polygon The shapely Polygon to be analysed
+     @param src The source Rasterio object that contains the data
+     @return A tuple containing the mode and the number of pixels
+    """
     # Extract the edges of the polygon as a single LineString
-    edges = LineString(polygon.geometry.exterior.coords)
+    # edges = LineString(polygon.geometry.exterior.coords)
     # Clip the raster to the LineString
     try:
         clipped_raster, _ = mask(src, [edges], crop=True)
@@ -252,10 +230,13 @@ def calc_most_common_landcover_class(polygon, src):
         mode_index = np.argmax(counts)
         filter_arr = vals > 0
         edge_class_numb = vals[filter_arr].size
-        # the mode is the value at the mode index
+        # the mode is the value at the mode index 
         mode = vals[mode_index]
         return mode, edge_class_numb
     
     except ValueError as e:
         print(f"Error: {e}. Skipping polygon...")
         return np.nan
+    
+    
+    

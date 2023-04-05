@@ -78,10 +78,14 @@ def _compute_indexes(polygons, src, output_dir, output_name):
         iji = calc_iji(masked)
         
         ##### EDGES #####
-        edges_d_index = calc_edge_diversity_index(polygon, src)
-        edges_mode = calc_most_common_landcover_class(polygon, src)[0]
+        # compute the edges's geometry
+        edges = calc_edges(polygon) 
+        # simple diversity index under edges
+        edges_d_index = calc_edge_diversity_index(edges, src)
+        # this function returns two variables edges mode (most common lc class) and the number of classes
+        edges_mode, edges_class_numb = calc_most_common_landcover_class(edges, src)#[0]
         
-        edges_class_numb = calc_most_common_landcover_class(polygon, src)[1]
+        #edges_class_numb = calc_most_common_landcover_class(edges, src)#[1]
         
         ## Store computed data 
         # Store basic information about the mask (cell number, classes number)

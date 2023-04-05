@@ -7,7 +7,7 @@
 
 #Performance : 
   # using i7 32gb RAM 
-  # #LAUNCHED a 15h40 21/03/2023 over 135k parcels finished in 15min without paralellization 
+  # #over 135k parcels and OSO (10*10m cells) finished in 15min without parallelization
 import rasterio
 import numpy as np
 import geopandas as gpd
@@ -57,7 +57,7 @@ def main():
         r_epsg = r_crs.to_epsg()
         print('Your raster file is using crs: ', r_epsg, 'This coordinate system will be used to reproject vectorial data if not.')
         polygons = gpd.read_file(os.path.join(data_dir, vector_name))
-        if (polygons.crs.to_epsg()!= r_epsg) : #reproject depending on raster's projection
+        if (polygons.crs.to_epsg()!= r_epsg) : # reprojecting depending on raster's projection
             print('Your polygons EPSG is : ', polygons.crs, '. It will be reprojected using raster\'s EPSG.' )
             polygons = polygons.to_crs(r_epsg)
             
