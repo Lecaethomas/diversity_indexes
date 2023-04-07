@@ -2,7 +2,8 @@ import rasterio
 import numpy as np
 from scipy import stats as st
 import geopandas as gpd
-from shapely.geometry import MultiLineString, LineString
+from shapely.geometry import MultiPolygon, LineString, MultiLineString
+import shapely.geometry.multipolygon as sh
 from shapely import ops
 from rasterio.mask import mask
 from scipy.stats import entropy
@@ -219,10 +220,8 @@ def calc_most_common_landcover_class(edges, src):
      @param src The source Rasterio object that contains the data
      @return A tuple containing the mode and the number of pixels
     """
-    # Extract the edges of the polygon as a single LineString
-    # edges = LineString(polygon.geometry.exterior.coords)
-    # Clip the raster to the LineString
     try:
+        src.nodata = 0 # set the nodata value
         clipped_raster, _ = mask(src, [edges], crop=True)
         # Calculate the mode of the clipped raster. The numpy array includes the rasterio no-data (0) so we still need to remove it.
         vals,counts = np.unique(clipped_raster[clipped_raster != src.nodata], return_counts=True)
@@ -239,4 +238,19 @@ def calc_most_common_landcover_class(edges, src):
         return np.nan
     
     
-    
+def calc_neg_buf_edges(polygon):
+    """
+     @brief Calculate a negative buffer and compute the corresponding linestring. It handles the risk that the negative buffer returns multipolygons
+     (on which LineString() function doesn't work)
+     @param polygon The shapely Polygon to be analyzed
+     @return a Linestring corresponding to the edges of the original polygon minus the size of the buffer
+    """
+    neg_buff = polygon['geometry'].buffer(-15)
+    if neg_buff.is_empty:
+        return None
+    else:
+        if isinstance(neg_buff, MultiPolygon):
+            neg_edges = neg_buff.boundary
+        else:
+            neg_edges = LineString(neg_buff.exterior.coords)
+        return neg_edges
