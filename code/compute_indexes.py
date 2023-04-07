@@ -84,14 +84,17 @@ def _compute_indexes(polygons, src, output_dir, output_name):
         edges_d_index = calc_edge_diversity_index(edges, src)
         # this function returns two variables edges mode (most common lc class) and the number of classes
         edges_mode, edges_class_numb = calc_most_common_landcover_class(edges, src)#[0]
+        ## Negative edges :
         """ We needed to compute the exact same thing but on the edges diminished of 15m. 
         By doing so we were getting empty geometries so it had to be handled properly.
         Also, multipolygons were gonna be created, it's also handled by using boundary() geopandas func """
+        
         neg_buf_edges = calc_neg_buf_edges(polygon)
         if neg_buf_edges is None:
             continue
         else :
             neg_buf_edges_mode, neg_buf_edges_class_numb = calc_most_common_landcover_class(neg_buf_edges, src)#[0]
+            neg_buf_edges_d_index = calc_edge_diversity_index(neg_buf_edges, src)
         #edges_class_numb = calc_most_common_landcover_class(edges, src)#[1]
         
         ## Store computed data 
@@ -121,11 +124,12 @@ def _compute_indexes(polygons, src, output_dir, output_name):
         polygons.loc[index, 'e_p_class_n']= class_numb - edges_class_numb
         
         ## NEGATIVES buffered EDGES 
-        polygons.loc[index, 'nbe_div_i'] = edges_d_index #div index
+        polygons.loc[index, 'nbe_div_i'] = neg_buf_edges_d_index #div index
         polygons.loc[index, 'nbe_mode'] = neg_buf_edges_mode # edges mode
         polygons.loc[index, 'nbe_class_n'] = neg_buf_edges_class_numb # edges number of lc class
         # Store difference between negative buffer edge's number of classes and polygon total number of classes
         polygons.loc[index, 'nbe_p_classn']= class_numb - neg_buf_edges_class_numb
+        
     
     # Depending on the parameters file we keep all the fields or we only keep the original geometry 
     if save_all_fields:   
@@ -137,9 +141,10 @@ def _compute_indexes(polygons, src, output_dir, output_name):
         light_polygons = polygons[[ 'geometry','cells_n', 'patch_n','class_n',
                                    'shannon_d', 'simpson_d', 'class_d', 'shannon_e',
                                    'dominance_i', 'ldi', 'contag_i',  'pci', 'lsi',
-                                   'pri', 'iji', 'e_div_i', 'e_mode', 'e_class_n', 'e_p_class_n',
-                                    'nbe_div_i', 'nbe_mode', 'nbe_p_classn']] 
-            # Save the polygon data to a GeoJSON file
+                                   'pri', 'iji', 'e_div_i', 'e_mode', 'e_class_n', 
+                                   'e_p_class_n','nbe_div_i', 'nbe_mode','nbe_class_n',
+                                   'nbe_p_classn']]
+        # Save the polygon data to a GeoJSON file
         light_polygons.to_file(os.path.join(output_dir, output_name),
                                driver='ESRI Shapefile', index=True)
     # Enlight polygons by keeping only interesting columns 

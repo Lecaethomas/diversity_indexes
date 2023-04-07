@@ -32,11 +32,15 @@ For more infos about diversity indexes and their meaning look at Fragstat docs
 - Patch Richness Index (PRI) (*pri*)
 - Interspersion end Juxtaposition Index (IJI) (*iji*)
 ##### Edges analysis
-- edge diversity index (*e_mode*)
-- edge mode (*pri*)
-- edge class number (*e_class_n*)
+- Edge diversity index (*e_div_i*)
+- Edge mode (*e_mode*)
+- Edge class number (*e_class_n*)
 - Difference in class number between edge and entire polygon (*e_p_class_n*)
-
+##### Negative buffer edges analysis (-15 meters)
+- Negative buffer edge diversity index (*nbe_div_i*)
+- Negative buffer edge mode (most represented lc class) (*e_mode*)
+- Negative buffer edge class number (*nbe_class_n*)
+- Difference in class number between negative buffer edge and entire polygon (*nbe_p_classn*)
 ## Usage
 This tool take two inputs : 
 - one one-band raster layer made of integers
