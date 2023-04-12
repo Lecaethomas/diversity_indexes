@@ -1,7 +1,7 @@
 version: 2
 
 conda:
-    environment: https://drive.google.com/file/d/1m3qKtJGpSChP463dA0f86hdhADNP17Un/view?usp=sharing
+    environment: docs/environment.yaml
 
 build:
    image: latest
