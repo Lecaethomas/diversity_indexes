@@ -17,7 +17,7 @@ build:
 
 # Use Anaconda to install dependencies
 conda:
-  environment: doc/environment.yml
+  environment: docs/environment.yml
 
 
 # Build documentation in the docs/ directory with Sphinx
