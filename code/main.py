@@ -8,20 +8,18 @@
 #Performances : 
   # using i7 32gb RAM 
   # #over 135k parcels and OSO (10*10m cells) finished in 15min without parallelization
+  
 import rasterio
 import numpy as np
 import geopandas as gpd
 from shapely.geometry import LineString
-from rasterio.mask import mask
 from scipy.stats import entropy
 from scipy import ndimage
 import os
 import json
 # local import
 from indexes_func import *
-import compute_indexes 
-
-
+import compute_indexes
 
 # Ignore "division by zeros" numpy errors 
 np.seterr(all='ignore')
@@ -44,6 +42,9 @@ params_f = os.path.join(code_dir, 'param.json')
 
 
 def main():
+    """main function used to launch the processing. It's kept without parameters for now because it may be
+    amended with parameters like an administrative divisions list so that it may be parallelized using multiprocessing
+    """    
     with open(params_f, 'r') as f: #Get parameters from params.json
         params = json.load(f)
         raster_name = params["raster_file_name"]
@@ -69,7 +70,7 @@ def main():
             print('Your polygons EPSG is : ', polygons.crs, '. It won\'t be reprojected.' )
             
         #Once parameters are defined let's launch it 
-        compute_indexes._compute_indexes(polygons, src,
+        compute_indexes.compute_indexes_(polygons, src,
                                          output_dir, output_name)
         
 main()

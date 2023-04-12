@@ -2,7 +2,6 @@ import rasterio
 import numpy as np
 import geopandas as gpd
 from shapely.geometry import LineString
-from rasterio.mask import mask
 from scipy.stats import entropy
 from scipy import ndimage
 import os
@@ -38,7 +37,15 @@ with open(params_f, 'r') as f:
     vector_name = params["rpg_complete_name"]
     output_name = params["name_for_output_parcels"]
 
-def _compute_indexes(polygons, src, output_dir, output_name):
+def compute_indexes_(polygons, src, output_dir, output_name):
+    """This function orchestrate the use of the indexes functions (defined in indexes_func.py)
+
+    :param polygons: Vectorial data read by geopandas/shapely
+    :param src: raster data read by rasterio
+    :param output_dir: the directory in which to save the output vectorial data (the code get it from the .json param file)
+    :param output_name: the name of the output layer (the code get it from the .json param file)
+    :return: nothing but save the vectorial data as shapefile in the output directory
+    """    
     for index, polygon in polygons.iterrows():
         # Extract the geometry of the polygon
         geom = polygon.geometry
@@ -122,20 +129,17 @@ def _compute_indexes(polygons, src, output_dir, output_name):
         polygons.loc[index, 'e_class_n'] = edges_class_numb # edges number of lc class
         # Store difference between edge's number of classes and polygon total number of classes
         polygons.loc[index, 'e_p_class_n']= class_numb - edges_class_numb
-        
         ## NEGATIVES buffered EDGES 
         polygons.loc[index, 'nbe_div_i'] = neg_buf_edges_d_index #div index
         polygons.loc[index, 'nbe_mode'] = neg_buf_edges_mode # edges mode
         polygons.loc[index, 'nbe_class_n'] = neg_buf_edges_class_numb # edges number of lc class
         # Store difference between negative buffer edge's number of classes and polygon total number of classes
         polygons.loc[index, 'nbe_p_classn']= class_numb - neg_buf_edges_class_numb
-        
     
     # Depending on the parameters file we keep all the fields or we only keep the original geometry 
     if save_all_fields:   
         polygons.to_file(os.path.join(output_dir, output_name),
                          driver='ESRI Shapefile', index=True)
-
     else :
         print('false')
         light_polygons = polygons[[ 'geometry','cells_n', 'patch_n','class_n',
@@ -147,4 +151,3 @@ def _compute_indexes(polygons, src, output_dir, output_name):
         # Save the polygon data to a GeoJSON file
         light_polygons.to_file(os.path.join(output_dir, output_name),
                                driver='ESRI Shapefile', index=True)
-    # Enlight polygons by keeping only interesting columns 

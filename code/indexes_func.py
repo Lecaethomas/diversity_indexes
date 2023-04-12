@@ -1,4 +1,3 @@
-import rasterio
 import numpy as np
 from scipy import stats as st
 import geopandas as gpd
@@ -14,10 +13,10 @@ from scipy import ndimage
 ## Elles seront appliquées itterativement aux "morceaux" d'OSO découpés par les polygones de parcelles du RPG
 
 def count_landcover_patches(masked):
-    """
-     @brief Count the patches (defined as contiguous cells having the same digital number) in a landcover raster
-     @param raster An array
-     @return The number of patches in the raster
+    """Count the patches (defined as contiguous cells having the same digital number) in a landcover raster
+    
+    :param raster: An array
+    :return: The number of patches in the raster
     """
     # Get the unique landcover classes in the raster.
     classes = np.unique(masked)
@@ -40,10 +39,10 @@ def count_landcover_patches(masked):
 
 #Landscape Division Index
 def calc_ldi(masked):
-    """
-     @brief Calculate the LDI of a set of cells. This is a measure of how much the cell is in the data set but not the area of the cell that is used to calculate the distance between the cell and its neighboring cells
-     @param masked A 2D NumPy array with shape ( nb_cells num_cells )
-     @return An LDI value between 0 and 1 ( inclusive ). The value is calculated as the standard deviation divided by the mean
+    """Calculate the LDI of a set of cells. This is a measure of how much the cell is in the data set but not the area of the cell that is used to calculate the distance between the cell and its neighboring cells
+    
+    :param masked: A 2D NumPy array with shape ( nb_cells num_cells )
+    :return: An LDI value between 0 and 1 ( inclusive ). The value is calculated as the standard deviation divided by the mean
     """
     # Calculate the standard deviation of cell values
     std = np.std(masked.flatten())
@@ -55,10 +54,10 @@ def calc_ldi(masked):
 
 ## Patch Cohesion Index
 def calc_pci(masked):
-    """
-     @brief Calculate the PCI for a set of images. This is based on the number of patches and perimeter
-     @param masked Masked image to calculate the PCI for
-     @return pci The PCI for the image as a function of the number of patches and perimeter ( float
+    """Calculate the PCI for a set of images. This is based on the number of patches and perimeter
+    
+    :param masked: Masked image to calculate the PCI for
+    :return: The PCI for the image as a function of the number of patches and perimeter ( float
     """
     # Calculate the Patch Cohesion Index (PCI)
     # Returns the sum of masked masked values.
@@ -91,10 +90,10 @@ def calc_pci(masked):
 
 ## Contagion Index 
 def calc_contag(masked):
-    """
-     @brief Calculate the contagion index of a mask. This is based on the proportion of the patches in the mask divided by the total area
-     @param masked The mask to calculate the contagion index for
-     @return The contagion index of the mask as a function of the area of the image and the proportion
+    """Calculate the contagion index of a mask. This is based on the proportion of the patches in the mask divided by the total area
+    
+    :param masked: The mask to calculate the contagion index for
+    :return: The contagion index of the mask as a function of the area of the image and the proportion
     """
     # Calculate the Contagion Index (CONTAG)
     # Returns the sum of masked masked values.
@@ -127,10 +126,10 @@ def calc_contag(masked):
 
 ## Landscape Shape Index
 def calc_lsi(masked):
-    """
-     @brief Calculate LSI for a landcover raster. This is based on the proportion of pixels in each row and column that have landcover.
-     @param lc The landcover raster to calculate lsi for.
-     @return The LSI for the raster as a 1 - ( var ( row ) + var ( column ))
+    """Calculate LSI for a landcover raster. This is based on the proportion of pixels in each row and column that have landcover.
+    
+    :param masked: The landcover raster to calculate lsi for.
+    :return: The LSI for the raster as a 1 - ( var ( row ) + var ( column ))
     """
     # convert landcover raster to binary (1 = landcover class present, 0 = landcover class absent)
     binary_lc = np.where(masked > 0, 1, 0)
@@ -150,10 +149,10 @@ def calc_lsi(masked):
 
 ## Patch Richness Index
 def calc_pri(masked):
-    """
-     @brief Calculate pri for landcover. This is based on the number of patches and total area for each class
-     @param lc numpy array of landcover classes
-     @return pri ( float ) : pri for landcover in range 0.. 1 where 0 is no patches and 1 is
+    """Calculate pri for landcover. This is based on the number of patches and total area for each class
+    
+    :param masked: numpy array of landcover classes
+    :return: pri for landcover in range 0.. 1 where 0 is no patches and 1 is
     """
     # get unique landcover classes
     classes = np.unique(masked)
@@ -175,11 +174,15 @@ def calc_pri(masked):
 
 ## Interspersion and Juxtaposition Index
 def calc_iji(masked):
-    """
-     @brief Calculate the number of neighboring pixels with different landcover classes. This is used to calculate the i. i. d.
-     @param lc The landcover raster of the same shape as the grid
-     @return The number of neighboring pixels with different landcover classes in the grid as a 1x1 np
-    """
+    """Calculate the number of neighboring pixels with different landcover classes. This is used to calculate the i. i. d.
+   
+   :param masked: the Landcover raster read by rasterio
+   :return: The number of neighboring pixels with different landcover classes in the grid as a 1x1 np
+    """   
+    # """
+    # :param masked: the Landcover raster read by rasterio
+    # :return iji: The number of neighboring pixels with different landcover classes in the grid as a 1x1 np
+    # """
     # convert landcover raster to binary (1 = landcover class present, 0 = landcover class absent)
     binary_lc = np.where(masked > 0, 1, 0)
     
@@ -188,16 +191,21 @@ def calc_iji(masked):
     
     return iji
 
-def calc_edges(polygon) : 
+def calc_edges(polygon): 
+    """Compute edges of a polygon
+   
+   :param polygon: a shapely polygon projected in a geographical coordinate system (meter unit)
+   :return: a linestring representing the contours of the original polygon
+    """
     edges = LineString(polygon.geometry.exterior.coords)
     return edges
 
 def calc_edge_diversity_index(edges, src):
-    """
-     @brief Calculate the diversity index for the edges of the polygon.
-     @param polygon shapely. geometry. Polygon Polygon to be analysed
-     @param src shapely. geometry. Polygon Source geometry to be used for clipping
-     @return int Index of the diversity in the polygon
+    """Calculate the diversity index for the edges of the polygon.
+    
+    :param edges: A multilinestring shapely to be used for processing.
+    :param src: the Landcover raster read by rasterio
+    :return: Diversity Index of the polygon
     """
     # Extract the edges of the polygon as a single LineString
     # edges = LineString(polygon.geometry.exterior.coords)
@@ -214,11 +222,11 @@ def calc_edge_diversity_index(edges, src):
         return np.nan
 
 def calc_most_common_landcover_class(edges, src):
-    """
-     @brief Calculate the most common landcover class for a shapely Polygon. This is used to calculate the most frequently used landcover class for a shapely Polygon
-     @param polygon The shapely Polygon to be analysed
-     @param src The source Rasterio object that contains the data
-     @return A tuple containing the mode and the number of pixels
+    """Calculate the most common landcover class for a shapely Polygon. This is used to calculate the most frequently used landcover class for a shapely Polygon
+    
+    :param edges: A multilinestring shapely to be used for processing.
+    :param src: the Landcover raster read by rasterio
+    :return: A tuple containing the mode and the number of pixels
     """
     try:
         src.nodata = 0 # set the nodata value
@@ -239,12 +247,11 @@ def calc_most_common_landcover_class(edges, src):
     
     
 def calc_neg_buf_edges(polygon):
-    """
-     @brief Calculate a negative buffer and compute the corresponding linestring. It handles the risk that the negative buffer returns multipolygons
-     (on which LineString() function doesn't work)
-     @param polygon The shapely Polygon to be analyzed
-     @return a Linestring corresponding to the edges of the original polygon minus the size of the buffer
-    """
+    """Calculate a negative buffer and compute the corresponding linestring. It handles the risk that the negative buffer returns multipolygons 
+    (on which LineString() function doesn't work)
+    
+    :param polygon: The shapely Polygon to be negatively buffered
+    :return:: a Linestring corresponding to the edges of the original polygon minus the size of the buffer"""
     neg_buff = polygon['geometry'].buffer(-15)
     if neg_buff.is_empty:
         return None
