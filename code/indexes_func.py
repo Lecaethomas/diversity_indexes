@@ -7,9 +7,8 @@ from shapely import ops
 from rasterio.mask import mask
 from scipy.stats import entropy
 from scipy import ndimage
-# from collections import Counter
 
-## Definition de quelques fonctions permettant de calculer des indices de diversité. Diversité brute de pixels mais aussi pour certaines prenant en compte les patches. 
+## Definition de fonctions permettant de calculer des indices de diversité. Diversité brute de pixels mais aussi pour certaines prenant en compte les patches. 
 ## Elles seront appliquées itterativement aux "morceaux" d'OSO découpés par les polygones de parcelles du RPG
 
 def count_landcover_patches(masked):
