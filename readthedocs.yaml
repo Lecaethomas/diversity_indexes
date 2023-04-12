@@ -25,7 +25,7 @@ conda:
 
 # Use a virtual environment to install dependencies
 virtualenv:
-  system_site_packages: false
+  # system_site_packages: false
   requirements: docs/requirements.txt
   create: true
   dest: /home/docs/checkouts/readthedocs.org/user_builds/myproject/envs/latest
