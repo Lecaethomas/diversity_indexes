@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>indexes_func module &mdash; Diversity Indexes 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="main module" href="main.html" />
+    <link rel="prev" title="compute_indexes module" href="compute_indexes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Diversity Indexes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compute_indexes.html">compute_indexes module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">indexes_func module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Diversity Indexes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">code</a></li>
+      <li class="breadcrumb-item active">indexes_func module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/indexes_func.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-indexes_func">
+<span id="indexes-func-module"></span><h1>indexes_func module<a class="headerlink" href="#module-indexes_func" title="Permalink to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="indexes_func.calc_contag">
+<span class="sig-prename descclassname"><span class="pre">indexes_func.</span></span><span class="sig-name descname"><span class="pre">calc_contag</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masked</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#indexes_func.calc_contag" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the contagion index of a mask. This is based on the proportion of the patches in the mask divided by the total area</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>masked</strong> – The mask to calculate the contagion index for</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The contagion index of the mask as a function of the area of the image and the proportion</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="indexes_func.calc_edge_diversity_index">
+<span class="sig-prename descclassname"><span class="pre">indexes_func.</span></span><span class="sig-name descname"><span class="pre">calc_edge_diversity_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#indexes_func.calc_edge_diversity_index" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the diversity index for the edges of the polygon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>edges</strong> – A multilinestring shapely to be used for processing.</p></li>
+<li><p><strong>src</strong> – the Landcover raster read by rasterio</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Diversity Index of the polygon</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="indexes_func.calc_edges">
+<span class="sig-prename descclassname"><span class="pre">indexes_func.</span></span><span class="sig-name descname"><span class="pre">calc_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#indexes_func.calc_edges" title="Permalink to this definition"></a></dt>
+<dd><p>Compute edges of a polygon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>polygon</strong> – a shapely polygon projected in a geographical coordinate system (meter unit)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a linestring representing the contours of the original polygon</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="indexes_func.calc_iji">
+<span class="sig-prename descclassname"><span class="pre">indexes_func.</span></span><span class="sig-name descname"><span class="pre">calc_iji</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masked</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#indexes_func.calc_iji" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the number of neighboring pixels with different landcover classes. This is used to calculate the i. i. d.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>masked</strong> – the Landcover raster read by rasterio</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of neighboring pixels with different landcover classes in the grid as a 1x1 np</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="indexes_func.calc_ldi">
+<span class="sig-prename descclassname"><span class="pre">indexes_func.</span></span><span class="sig-name descname"><span class="pre">calc_ldi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masked</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#indexes_func.calc_ldi" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the LDI of a set of cells. This is a measure of how much the cell is in the data set but not the area of the cell that is used to calculate the distance between the cell and its neighboring cells</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>masked</strong> – A 2D NumPy array with shape ( nb_cells num_cells )</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An LDI value between 0 and 1 ( inclusive ). The value is calculated as the standard deviation divided by the mean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="indexes_func.calc_lsi">
+<span class="sig-prename descclassname"><span class="pre">indexes_func.</span></span><span class="sig-name descname"><span class="pre">calc_lsi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masked</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#indexes_func.calc_lsi" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate LSI for a landcover raster. This is based on the proportion of pixels in each row and column that have landcover.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>masked</strong> – The landcover raster to calculate lsi for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The LSI for the raster as a 1 - ( var ( row ) + var ( column ))</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="indexes_func.calc_most_common_landcover_class">
+<span class="sig-prename descclassname"><span class="pre">indexes_func.</span></span><span class="sig-name descname"><span class="pre">calc_most_common_landcover_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#indexes_func.calc_most_common_landcover_class" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the most common landcover class for a shapely Polygon. This is used to calculate the most frequently used landcover class for a shapely Polygon</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>edges</strong> – A multilinestring shapely to be used for processing.</p></li>
+<li><p><strong>src</strong> – the Landcover raster read by rasterio</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing the mode and the number of pixels</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="indexes_func.calc_neg_buf_edges">
+<span class="sig-prename descclassname"><span class="pre">indexes_func.</span></span><span class="sig-name descname"><span class="pre">calc_neg_buf_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">polygon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#indexes_func.calc_neg_buf_edges" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate a negative buffer and compute the corresponding linestring. It handles the risk that the negative buffer returns multipolygons 
+(on which LineString() function doesn’t work)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>polygon</strong> – The shapely Polygon to be negatively buffered</p>
+</dd>
+<dt class="field-even">Return:<span class="colon">:</span></dt>
+<dd class="field-even"><p>a Linestring corresponding to the edges of the original polygon minus the size of the buffer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="indexes_func.calc_pci">
+<span class="sig-prename descclassname"><span class="pre">indexes_func.</span></span><span class="sig-name descname"><span class="pre">calc_pci</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masked</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#indexes_func.calc_pci" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the PCI for a set of images. This is based on the number of patches and perimeter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>masked</strong> – Masked image to calculate the PCI for</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The PCI for the image as a function of the number of patches and perimeter ( float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="indexes_func.calc_pri">
+<span class="sig-prename descclassname"><span class="pre">indexes_func.</span></span><span class="sig-name descname"><span class="pre">calc_pri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masked</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#indexes_func.calc_pri" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate pri for landcover. This is based on the number of patches and total area for each class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>masked</strong> – numpy array of landcover classes</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>pri for landcover in range 0.. 1 where 0 is no patches and 1 is</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="indexes_func.count_landcover_patches">
+<span class="sig-prename descclassname"><span class="pre">indexes_func.</span></span><span class="sig-name descname"><span class="pre">count_landcover_patches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">masked</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#indexes_func.count_landcover_patches" title="Permalink to this definition"></a></dt>
+<dd><p>Count the patches (defined as contiguous cells having the same digital number) in a landcover raster</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>raster</strong> – An array</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of patches in the raster</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="compute_indexes.html" class="btn btn-neutral float-left" title="compute_indexes module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="main.html" class="btn btn-neutral float-right" title="main module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Thomas Lecae.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
