@@ -1,3 +1,4 @@
+#Made using conda env export --no-builds > environment.yml
 name: gis_1
 channels:
   - conda-forge
