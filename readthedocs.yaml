@@ -1,14 +1,14 @@
 version: 2
 
 conda:
-    environment: docs/environment.yml
+    environment: docs/environment.yaml
 
 build:
    image: latest
 
 # This part is necessary otherwise the project is not built
 python:
-   version: 3.7
+   version: 3.9
    install:
       - method: pip
         path: .
