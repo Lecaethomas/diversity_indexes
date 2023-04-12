@@ -15,7 +15,7 @@ backcall==0.2.0
 # backports.functools_lru_cache==1.6.4  
 beautifulsoup4==4.11.2  
 bleach==6.0.0  
-blosc==1.21.3  
+blosc==1.11.1 
 boost-cpp==1.78.0  
 branca==0.6.0  
 brotli==1.0.9  
