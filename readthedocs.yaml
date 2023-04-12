@@ -18,7 +18,7 @@ build:
 
 # Use Anaconda to install dependencies
 conda:
-  environment: gis_1
+  environment: environment.yml
 
 
 # Build documentation in the docs/ directory with Sphinx
