@@ -1,5 +1,5 @@
 #Made using conda env export --no-builds > environment.yml
-name: gis_1
+name: test
 channels:
   - conda-forge
   - defaults
