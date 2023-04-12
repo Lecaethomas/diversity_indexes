@@ -8,9 +8,9 @@ build:
 
 # This part is necessary otherwise the project is not built
 python:
-   version: "3.8"
+   version: "3.9"
    install:
-      - method: conda
+      - method: pip
         path: .
         
 # By default readthedocs does not checkout git submodules
