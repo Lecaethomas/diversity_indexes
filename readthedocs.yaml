@@ -10,7 +10,7 @@ build:
 python:
    version: "3.8"
    install:
-      - method: pip
+      - method: conda
         path: .
         
 # By default readthedocs does not checkout git submodules
