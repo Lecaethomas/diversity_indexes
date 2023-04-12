@@ -20,15 +20,7 @@ sphinx:
    configuration: docs/conf.py
 # Use Anaconda to install dependencies
 conda:
-  environment: docs/environment.yml
-
-
-# Use a virtual environment to install dependencies
-virtualenv:
-  # system_site_packages: false
-  requirements: docs/requirements.txt
-  create: true
-  dest: /home/docs/checkouts/readthedocs.org/user_builds/myproject/envs/latest
+  environment: docs/environment.yaml
 
 # If using Sphinx, optionally build your docs in additional formats such as PDF
 # formats:
