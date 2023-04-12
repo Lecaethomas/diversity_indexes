@@ -3,6 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - python=3.9.16
   - affine=2.4.0
   - alabaster=0.7.12
   - anyio=3.6.2
@@ -190,7 +191,6 @@ dependencies:
   - pyproj=3.4.1
   - pyrsistent=0.19.3
   - pysocks=1.7.1
-  - python=3.9.16
   - python-dateutil=2.8.2
   - python-fastjsonschema=2.16.2
   - python-json-logger=2.0.6
