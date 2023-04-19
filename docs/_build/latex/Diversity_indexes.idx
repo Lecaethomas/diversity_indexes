@@ -1,0 +1,19 @@
+\indexentry{module@\spxentry{module}!compute\_indexes@\spxentry{compute\_indexes}|hyperpage}{1}
+\indexentry{compute\_indexes@\spxentry{compute\_indexes}!module@\spxentry{module}|hyperpage}{1}
+\indexentry{compute\_indexes\_() (in module compute\_indexes)@\spxentry{compute\_indexes\_()}\spxextra{in module compute\_indexes}|hyperpage}{1}
+\indexentry{module@\spxentry{module}!indexes\_func@\spxentry{indexes\_func}|hyperpage}{1}
+\indexentry{indexes\_func@\spxentry{indexes\_func}!module@\spxentry{module}|hyperpage}{1}
+\indexentry{calc\_contag() (in module indexes\_func)@\spxentry{calc\_contag()}\spxextra{in module indexes\_func}|hyperpage}{1}
+\indexentry{calc\_edge\_diversity\_index() (in module indexes\_func)@\spxentry{calc\_edge\_diversity\_index()}\spxextra{in module indexes\_func}|hyperpage}{1}
+\indexentry{calc\_edges() (in module indexes\_func)@\spxentry{calc\_edges()}\spxextra{in module indexes\_func}|hyperpage}{1}
+\indexentry{calc\_iji() (in module indexes\_func)@\spxentry{calc\_iji()}\spxextra{in module indexes\_func}|hyperpage}{2}
+\indexentry{calc\_ldi() (in module indexes\_func)@\spxentry{calc\_ldi()}\spxextra{in module indexes\_func}|hyperpage}{2}
+\indexentry{calc\_lsi() (in module indexes\_func)@\spxentry{calc\_lsi()}\spxextra{in module indexes\_func}|hyperpage}{2}
+\indexentry{calc\_most\_common\_landcover\_class() (in module indexes\_func)@\spxentry{calc\_most\_common\_landcover\_class()}\spxextra{in module indexes\_func}|hyperpage}{2}
+\indexentry{calc\_neg\_buf\_edges() (in module indexes\_func)@\spxentry{calc\_neg\_buf\_edges()}\spxextra{in module indexes\_func}|hyperpage}{2}
+\indexentry{calc\_pci() (in module indexes\_func)@\spxentry{calc\_pci()}\spxextra{in module indexes\_func}|hyperpage}{2}
+\indexentry{calc\_pri() (in module indexes\_func)@\spxentry{calc\_pri()}\spxextra{in module indexes\_func}|hyperpage}{3}
+\indexentry{count\_landcover\_patches() (in module indexes\_func)@\spxentry{count\_landcover\_patches()}\spxextra{in module indexes\_func}|hyperpage}{3}
+\indexentry{module@\spxentry{module}!main@\spxentry{main}|hyperpage}{3}
+\indexentry{main@\spxentry{main}!module@\spxentry{module}|hyperpage}{3}
+\indexentry{main() (in module main)@\spxentry{main()}\spxextra{in module main}|hyperpage}{3}

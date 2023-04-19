@@ -1,0 +1,39 @@
+\begin{sphinxtheindex}
+\let\bigletter\sphinxstyleindexlettergroup
+\let\spxpagem \sphinxstyleindexpagemain
+\let\spxentry \sphinxstyleindexentry
+\let\spxextra \sphinxstyleindexextra
+
+  \bigletter C
+  \item \spxentry{calc\_contag()}\spxextra{in module indexes\_func}, \hyperpage{1}
+  \item \spxentry{calc\_edge\_diversity\_index()}\spxextra{in module indexes\_func}, \hyperpage{1}
+  \item \spxentry{calc\_edges()}\spxextra{in module indexes\_func}, \hyperpage{1}
+  \item \spxentry{calc\_iji()}\spxextra{in module indexes\_func}, \hyperpage{2}
+  \item \spxentry{calc\_ldi()}\spxextra{in module indexes\_func}, \hyperpage{2}
+  \item \spxentry{calc\_lsi()}\spxextra{in module indexes\_func}, \hyperpage{2}
+  \item \spxentry{calc\_most\_common\_landcover\_class()}\spxextra{in module indexes\_func}, 
+		\hyperpage{2}
+  \item \spxentry{calc\_neg\_buf\_edges()}\spxextra{in module indexes\_func}, \hyperpage{2}
+  \item \spxentry{calc\_pci()}\spxextra{in module indexes\_func}, \hyperpage{2}
+  \item \spxentry{calc\_pri()}\spxextra{in module indexes\_func}, \hyperpage{3}
+  \item \spxentry{compute\_indexes}
+    \subitem \spxentry{module}, \hyperpage{1}
+  \item \spxentry{compute\_indexes\_()}\spxextra{in module compute\_indexes}, \hyperpage{1}
+  \item \spxentry{count\_landcover\_patches()}\spxextra{in module indexes\_func}, \hyperpage{3}
+
+  \indexspace
+  \bigletter I
+  \item \spxentry{indexes\_func}
+    \subitem \spxentry{module}, \hyperpage{1}
+
+  \indexspace
+  \bigletter M
+  \item \spxentry{main}
+    \subitem \spxentry{module}, \hyperpage{3}
+  \item \spxentry{main()}\spxextra{in module main}, \hyperpage{3}
+  \item \spxentry{module}
+    \subitem \spxentry{compute\_indexes}, \hyperpage{1}
+    \subitem \spxentry{indexes\_func}, \hyperpage{1}
+    \subitem \spxentry{main}, \hyperpage{3}
+
+\end{sphinxtheindex}
