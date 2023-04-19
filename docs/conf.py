@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 code_dir = Path(__file__).resolve().parent.parent / 'code'
-sys.path.insert(0, str(code_dir))
+code_dir = sys.path.insert(0, str(code_dir))
 
 # sys.path.insert(0, os.path.abspath('../code'))
 
@@ -46,7 +46,11 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = [
+                    '_build',
+                    'Thumbs.db',
+                    '.DS_Store'
+                    ]
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -60,3 +64,33 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+
+master_doc= 'index'
+
+latex_documents = [
+  (master_doc, 'Diversity_indexes.tex', 'Diversity Indexes',
+   'Lecaé Thomas - INRAE - ODR', 'article', False),
+]
+
+# latex_logo = '..\supports\logo.png'
+latex_elements = {
+    'preamble': r'''
+        \usepackage{graphicx}
+    
+    ''',
+    'maketitle': r'''
+        \begin{titlepage}
+            \centering
+            \includegraphics[width = 60mm]{logo.png}\\[8ex]
+            \vspace{1cm}
+            {\Huge\bfseries Diversity Indexes \par}
+            \vspace{1cm}
+            {\Large User Manual \par}
+            \vspace{1cm}
+            {\Large Author : LECAE Thomas\\[4ex]}
+            \vfill
+            {\large \today\par}
+        \end{titlepage}
+    '''
+}
