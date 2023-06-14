@@ -11,8 +11,8 @@ from scipy import ndimage
 ## Definition de fonctions permettant de calculer des indices de diversité. Diversité brute de pixels mais aussi pour certaines prenant en compte les patches. 
 ## Elles seront appliquées itterativement aux "morceaux" d'OSO découpés par les polygones de parcelles du RPG
 
-def count_landcover_patches(masked):
-    """Count the patches (defined as contiguous cells having the same digital number) in a landcover raster
+def count_landcover_patches_4c(masked):
+    """Count the patches (defined as contiguous cells (interpreted as 4-connectivity) having the same digital number) in a landcover raster
     
     :param raster: An array
     :return: The number of patches in the raster
@@ -20,7 +20,35 @@ def count_landcover_patches(masked):
     # Get the unique landcover classes in the raster.
     classes = np.unique(masked)
     # Initialize a variable to store the total number of patches.
-    patch_count = 0
+    patch_count_4c = 0
+    # Loop over each landcover class.
+    # This function will label the connected regions of the current class.
+    for c in classes:
+        # Create a binary mask for the current class.
+        binary_raster = np.where(masked == c, 1, 0)
+        # Define the structure based on the shape of the binary_raster.
+        structure = ndimage.generate_binary_structure(binary_raster.ndim, 8)
+        # Label the connected regions in the binary mask.
+        labeled_raster, num_labels = ndimage.label(binary_raster, structure=structure)
+        # Count the number of patches with contiguous cells of the same class.
+        for i in range(1, num_labels + 1):
+            patch_mask = labeled_raster == i
+            # If patch_mask is not empty, increment patch count.
+            if patch_mask.any():
+                patch_count_4c += 1
+    return patch_count_4c
+
+
+def count_landcover_patches_8c(masked):
+    """Count the patches (defined as contiguous cells (interpreted as 8-connectivity) having the same digital number) in a landcover raster
+    
+    :param raster: An array
+    :return: The number of patches in the raster
+    """
+    # Get the unique landcover classes in the raster.
+    classes = np.unique(masked)
+    # Initialize a variable to store the total number of patches.
+    patch_count_8c = 0
     # Loop over each landcover class.
     # This function will label the connected regions of the current class.
     for c in classes:
@@ -33,8 +61,8 @@ def count_landcover_patches(masked):
             patch_mask = labeled_raster == i
             # If patch_mask is not empty it will increment patch count.
             if patch_mask.any():
-                patch_count += 1
-    return patch_count
+                patch_count_8c += 1
+    return patch_count_8c
 
 #Landscape Division Index
 def calc_ldi(masked):

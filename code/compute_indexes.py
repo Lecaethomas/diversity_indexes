@@ -55,7 +55,8 @@ def compute_indexes_(polygons, src, output_dir, output_name):
         cell_values = np.unique(masked.flatten())
         unique, counts = np.unique(masked, return_counts=True)
         total_cells = np.sum(counts)
-        patch_numb = count_landcover_patches(masked)
+        patch_numb8c = count_landcover_patches_8c(masked)
+        patch_numb4c = count_landcover_patches_4c(masked)
         filter_arr = unique > 0
         class_numb = unique[filter_arr].size
 
@@ -108,7 +109,9 @@ def compute_indexes_(polygons, src, output_dir, output_name):
         # Store basic information about the mask (cell number, classes number)
         polygons.loc[index, 'cells_n'] = total_cells
         polygons.loc[index, 'class_n'] = class_numb
-        polygons.loc[index, 'patch_n'] = patch_numb
+        polygons.loc[index, 'patch_n_4c'] = patch_numb4c
+        polygons.loc[index, 'patch_n_8c'] = patch_numb8c
+
         # Store the diversity indices in the new columns
         polygons.loc[index, 'shannon_d'] = shannon_diversity
         polygons.loc[index, 'simpson_d'] = simpson_diversity
@@ -142,7 +145,7 @@ def compute_indexes_(polygons, src, output_dir, output_name):
                          driver='ESRI Shapefile', index=True)
     else :
         print('false')
-        light_polygons = polygons[[ 'geometry','cells_n', 'patch_n','class_n',
+        light_polygons = polygons[[ 'geometry','cells_n', 'patch_n_4c','patch_n_8c','class_n',
                                    'shannon_d', 'simpson_d', 'class_d', 'shannon_e',
                                    'dominance_i', 'ldi', 'contag_i',  'pci', 'lsi',
                                    'pri', 'iji', 'e_div_i', 'e_mode', 'e_class_n', 
